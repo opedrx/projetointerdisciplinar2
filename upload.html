@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload | Evolua-me</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+  <header>
+    <div class="logo">Evolua-me</div>
+    <nav>
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="trilhas.html" class="nav-link">Trilhas</a>
+      <a href="upload.html" class="nav-link active">Upload</a>
+      <a href="quiz.html" class="nav-link">Quiz</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <button class="nav-button" id="theme-toggle"><i id="theme-icon"></i></button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Enviar Material</h1>
+    <p>Envie PDFs, provas ou textos que deseja estudar.</p>
+
+    <div class="upload-box" id="upload-box">
+      <input type="file" id="file-input" accept=".pdf,.docx,.txt" hidden>
+      <button class="btn btn-login" id="upload-btn">Selecionar Arquivo</button>
+    </div>
+    <p id="file-name"></p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Evolua-me. Todos os direitos reservados.</p>
+  </footer>
+
+  </body>
+</html>

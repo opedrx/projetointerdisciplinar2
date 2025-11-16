@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Evolua-me</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+  <script src="script.js" defer></script>
+</head>
+<body class="body-glass-login">
+  
+  <div class="wrapper">
+      <form id="login-form">
+        <h2>Login</h2>
+
+        <div class="input-field">
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
+        </div>
+
+        <div class="input-field">
+          <input type="password" id="senha" required>
+          <label for="senha">Senha</label>
+        </div>
+
+        <div class="forget">
+          <label for="remember">
+            <input type="checkbox" id="remember">
+            <p>Me Manter Conectado</p>
+          </label>
+          <a href="#">Esqueceu a senha?</a>
+        </div>
+        
+        <button type="submit" class="btn-primary-glass">Continuar</button>
+
+        <div class="register">
+          <p>Ainda não tem uma conta? <a href="#">Registre-se</a></p>
+        </div>
+        
+        <p id="error-message" class="error-glass"></p>
+      </form>
+  </div>
+
+  </body>
+</html>
