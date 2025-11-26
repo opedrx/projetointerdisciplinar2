@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     handleUploadPage();
 
     handleLoginPage();
+
+    handleTabs();
 });
 
 function handleThemeToggle() {
@@ -269,31 +271,100 @@ function handleUploadPage() {
 
 function handleLoginPage() {
     const loginForm = document.getElementById('login-form');
+    const cadastroForm = document.getElementById('cadastro-form'); // Capturamos o form de cadastro
     const errorMessage = document.getElementById('error-message');
 
-    if (!loginForm) {
+    // Lógica do LOGIN
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Impede o refresh da página
+            
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            if (errorMessage) errorMessage.textContent = '';
+
+            // DICA DE SEGURANÇA: Evite logs de senha em produção
+            console.log('Tentativa de login:', email); 
+            
+            if (email && senha) {
+                // Aqui entraria sua chamada para o Backend (Python/Flask/Django)
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Preencha os campos para testar.');
+            }
+        });
+    }
+
+    // Lógica do CADASTRO (A correção principal)
+    if (cadastroForm) {
+        cadastroForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Impede o refresh!
+            
+            const nome = document.getElementById('nome-cadastro').value;
+            const email = document.getElementById('email-cadastro').value;
+            const senha = document.getElementById('senha-cadastro').value;
+
+            console.log('Novo usuário registrado:', nome, email);
+            
+            // Simulação de sucesso
+            alert(`Bem-vindo(a), ${nome}! Cadastro realizado com sucesso.`);
+            
+            // Opcional: Redirecionar para o login ou dashboard
+            // window.location.href = 'dashboard.html';
+        });
+    }
+}
+
+function handleTabs() {
+    const tabsContainer = document.querySelector('.tabs-container');
+    const formsWrapper = document.querySelector('.forms-wrapper');
+    const tabIndicator = document.querySelector('.tab-indicator');
+    
+    if (!tabsContainer || !formsWrapper) {
         return;
     }
 
-    loginForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const senha = document.getElementById('senha').value;
+    // Função auxiliar para mudar a aba
+    const switchTab = (tabName) => {
+        // 1. Atualiza visual dos botões
+        tabsContainer.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-tab') === tabName) {
+                btn.classList.add('active');
+            }
+        });
 
-        if (errorMessage) {
-            errorMessage.textContent = '';
+        // 2. Animação de deslize
+        if (tabName === 'login') {
+            tabIndicator.style.transform = 'translateX(0)';
+            formsWrapper.style.transform = 'translateX(0)'; 
+        } else if (tabName === 'cadastro') {
+            tabIndicator.style.transform = 'translateX(100%)';
+            formsWrapper.style.transform = 'translateX(-50%)'; 
         }
+    };
 
-        console.log('Tentativa de login com:', email, senha);
-        alert('Lógica de login com Firebase ainda não implementada.');
+    // Listener para cliques nos botões superiores
+    tabsContainer.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.classList.contains('tab-button')) {
+            const tabName = target.getAttribute('data-tab');
+            switchTab(tabName);
+        }
     });
 
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    if (googleLoginBtn) {
-        googleLoginBtn.addEventListener('click', () => {
-            console.log('Tentativa de login com Google');
-            alert('Lógica de login com Google (Firebase) ainda não implementada.');
+    // NOVO: Listener para os links de texto dentro do form ("Crie uma agora" / "Fazer Login")
+    const switchLinks = document.querySelectorAll('.switch-tab');
+    switchLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabName = link.getAttribute('data-tab');
+            switchTab(tabName);
         });
-    }
+    });
+
+    // Estado inicial
+    tabIndicator.style.transform = 'translateX(0)';
+    formsWrapper.style.transform = 'translateX(0)';
 }

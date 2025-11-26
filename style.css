@@ -45,7 +45,6 @@ body.dark-mode {
     box-sizing: border-box;
 }
 
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
@@ -56,7 +55,6 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 
 header {
     display: flex;
@@ -116,6 +114,7 @@ nav {
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
+    text-decoration: none;
 }
 .btn-login {
     background-color: var(--primary-color);
@@ -125,11 +124,15 @@ nav {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
+
+/* BOTÃO REDONDO (TEMA/IDIOMA) */
 .nav-button {
-    background-color: var(--bg-color);
-    color: var(--nav-button-text);
+    background-color: var(--bg-color); 
+    color: var(--nav-button-text);     
     font-size: 1.1rem;
-    border: 2px solid var(--primary-color);
+    border: none !important;      
+    outline: none !important;     
+    box-shadow: none !important;  
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -138,6 +141,12 @@ nav {
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s ease;
+}
+
+.nav-button:focus, .nav-button:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 .nav-button:hover { filter: brightness(0.9); }
 .nav-button i { font-size: 1.2rem; line-height: 1; }
@@ -226,8 +235,7 @@ footer {
 
 
 body.body-vitrine {
-
-    background: url('images/montanha.jpg') no-repeat center center fixed;
+    background: url('images/montanha2.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
 }
@@ -289,35 +297,106 @@ body.body-glass-login {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('images/montanha.jpg') no-repeat center center fixed;
+    background: url('images/montanha2.jpg') no-repeat center center fixed;
     background-size: cover;
     flex-direction: row; 
+    margin: 0; 
+    padding: 20px; /* Garante que não cole nas bordas em telas pequenas */
 }
 
-/* Card de Vidro do Login */
+/* --- ESTILOS DO CARD DE LOGIN (ATUALIZADO E CORRIGIDO) --- */
 .wrapper {
-    width: 420px;
+    width: 90%;          /* Ocupa 90% da tela em dispositivos móveis */
+    max-width: 550px;    /* Trava em 550px se a tela for grande (PC) */
     background-color: var(--glass-bg-color);
     border: 1px solid var(--glass-border-color);
     border-radius: 12px;
-    padding: 30px 40px;
+    padding: 30px 15px; /* 👈 padding ajustado */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(9px);
     -webkit-backdrop-filter: blur(9px);
     color: var(--glass-text-color);
+    overflow: hidden !important;
+    position: relative;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden !important;
 }
 
-.wrapper h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: var(--glass-text-color);
-    text-align: center;
+
+/* Cabeçalho das Abas */
+.tabs-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px; 
+    position: relative;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
 }
 
+/* Botões das Abas */
+.tab-button {
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6); 
+    padding: 10px 0;
+    flex: 1;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+.tab-button.active {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* A LINHA (INDICADOR) - BRANCA/NEON */
+.tab-indicator {
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    height: 4px; 
+    width: 50%;
+    background-color: #ffffff; 
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); 
+    border-radius: 2px;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    z-index: 1;
+}
+
+/* Container que desliza os formulários */
+.forms-wrapper {
+    display: flex;
+    width: 200%; /* 👈 largura exata da área de 2 formulários */
+    transition: transform .4s ease;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    overflow: hidden; /* 👈 obrigatório */
+}
+
+
+
+
+/* Cada formulário individual */
+.form-content {
+    width: 50%;        /* 50% de 200% = 100% da área visível */
+    flex: 0 0 50%;     /* Impede que o flexbox estique ou encolha */
+    min-width: 50%;    /* Garante o tamanho */
+    padding: 0 20px;   /* Um respiro nas laterais ajuda */
+    box-sizing: border-box;
+}
+
+
+/* Inputs e Labels */
 .input-field {
     position: relative;
     border-bottom: 2px solid var(--glass-border-color);
-    margin: 30px 0;
+    margin: 25px 0; /* Ajustado levemente a margem */
 }
 
 .input-field label {
@@ -348,11 +427,12 @@ body.body-glass-login {
     font-size: 0.8em;
 }
 
+/* Links "Esqueceu a senha" e Checkbox */
 .forget {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: -15px 0 15px;
+    margin: -10px 0 15px; /* Ajuste para economizar espaço */
     font-size: 0.9em;
 }
 
@@ -373,6 +453,7 @@ body.body-glass-login {
 }
 .forget a:hover { text-decoration: underline; }
 
+/* Botão Principal do Form */
 .btn-primary-glass {
     width: 100%;
     height: 45px;
@@ -384,6 +465,7 @@ body.body-glass-login {
     cursor: pointer;
     font-size: 1em;
     transition: 0.3s ease;
+    margin-top: 10px;
 }
 
 .btn-primary-glass:hover {
@@ -392,18 +474,30 @@ body.body-glass-login {
     border: 1px solid var(--glass-border-color);
 }
 
+/* Rodapé do Form (Switch Link) */
 .register {
     text-align: center;
-    margin: 20px 0 0;
+    margin: 25px 0 0;
     font-size: 0.9em;
 }
 
-.register p a {
-    color: var(--glass-link-color);
-    text-decoration: none;
-    font-weight: 600;
+.register p {
+    color: rgba(255, 255, 255, 0.8);
 }
-.register p a:hover { text-decoration: underline; }
+
+.switch-tab {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.switch-tab:hover {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+    border-bottom-style: solid;
+}
 
 .error-glass {
     color: var(--wrong-color);
@@ -415,4 +509,31 @@ body.body-glass-login {
 
 body.body-glass-login main {
     padding-top: 0;
+}
+
+/* --- REMOÇÃO FORÇADA DE BORDAS AZUIS DE FOCO (ACESSIBILIDADE LIMPA) --- */
+#lang-toggle, 
+#theme-toggle, 
+.btn-login, 
+.btn-cta, 
+.nav-button,
+a.btn:focus,
+button:focus {
+    outline: none !important;
+    box-shadow: none !important; 
+}
+
+#lang-toggle:focus, 
+#theme-toggle:focus, 
+.nav-button:focus,
+.btn-login:focus {
+    outline: none !important;
+    border-color: transparent !important;
+}
+
+.form-content {
+    width: 50% !important;
+    min-width: 50% !important;
+    max-width: 50% !important;
+    flex: 0 0 50% !important;
 }

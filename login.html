@@ -11,36 +11,66 @@
 <body class="body-glass-login">
   
   <div class="wrapper">
-      <form id="login-form">
-        <h2>Login</h2>
-
-        <div class="input-field">
-          <input type="email" id="email" required>
-          <label for="email">Email</label>
-        </div>
-
-        <div class="input-field">
-          <input type="password" id="senha" required>
-          <label for="senha">Senha</label>
-        </div>
-
-        <div class="forget">
-          <label for="remember">
-            <input type="checkbox" id="remember">
-            <p>Me Manter Conectado</p>
-          </label>
-          <a href="#">Esqueceu a senha?</a>
-        </div>
+    <div class="tabs-container">
+        <button class="tab-button active" data-tab="login">Login</button>
+        <button class="tab-button" data-tab="cadastro">Cadastro</button>
+        <div class="tab-indicator"></div>
+    </div>
+    
+    <div class="forms-wrapper">
         
-        <button type="submit" class="btn-primary-glass">Continuar</button>
+        <form id="login-form" class="form-content active-form">
+            <div class="input-field">
+                <input type="email" id="email" required>
+                <label for="email">Email</label>
+            </div>
+            
+            <div class="input-field">
+                <input type="password" id="senha" required>
+                <label for="senha">Senha</label>
+            </div>
+            
+            <div class="forget">
+                <label for="remember">
+                    <input type="checkbox" id="remember">
+                    <p>Me Manter Conectado</p>
+                </label>
+                <a href="#">Esqueceu a senha?</a>
+            </div>
+            
+            <button type="submit" class="btn-primary-glass">Entrar</button>
+            
+            <div class="register">
+                <p>Ainda não tem conta? <a href="#" class="switch-tab" data-tab="cadastro">Crie uma agora</a></p>
+            </div>
+            
+            <p id="error-message" class="error-glass"></p>
+        </form>
 
-        <div class="register">
-          <p>Ainda não tem uma conta? <a href="#">Registre-se</a></p>
-        </div>
-        
-        <p id="error-message" class="error-glass"></p>
-      </form>
+        <form id="cadastro-form" class="form-content">
+            <div class="input-field">
+                <input type="text" id="nome-cadastro" required>
+                <label for="nome-cadastro">Nome</label>
+            </div>
+
+            <div class="input-field">
+                <input type="email" id="email-cadastro" required>
+                <label for="email-cadastro">Email</label>
+            </div>
+
+            <div class="input-field">
+                <input type="password" id="senha-cadastro" required>
+                <label for="senha-cadastro">Senha</label>
+            </div>
+            
+            <button type="submit" class="btn-primary-glass">Registrar</button>
+
+            <div class="register">
+                <p>Já tem uma conta? <a href="#" class="switch-tab" data-tab="login">Fazer Login</a></p>
+            </div>
+        </form>
+    </div>
   </div>
 
-  </body>
+</body>
 </html>
