@@ -1,66 +1,38 @@
-// Espera o DOM (a página) carregar antes de rodar o script
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- 1. Lógica Global (Roda em TODAS as páginas) ---
-    // A lógica do tema é global, pois o botão existe em todas as páginas.
     handleThemeToggle();
-
-    // --- 2. Lógicas Específicas de cada Página ---
-    // Cada função verifica se os elementos daquela página existem antes de rodar.
-
-    // Lógica da 'index.html' (Idioma e Login)
     handleIndexPage();
-
-    // Lógica da 'quiz.html'
     handleQuizPage();
-
-    // Lógica da 'trilhas.html'
     handleTrilhasPage();
-
-    // Lógica da 'upload.html'
     handleUploadPage();
-
-    // A 'dashboard.html' não possui scripts interativos no momento.
     handleLoginPage();
+    handleTabs();
 });
 
-/**
- * Controla o botão de troca de tema (claro/escuro).
- * Esta função é global e deve funcionar em todas as páginas.
- */
 function handleThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
     const body = document.body;
 
-    // Se não encontrar os elementos, para a execução desta função
-    if (!themeToggle || !themeIcon) {
-        return;
-    }
+    if (!themeToggle || !themeIcon) return;
 
-    // Função para atualizar o ícone baseado no tema
     const updateThemeIcon = () => {
         if (body.classList.contains('dark-mode')) {
-            themeIcon.className = 'bi bi-brightness-high'; // Sol
+            themeIcon.className = 'bi bi-brightness-high';
         } else {
-            themeIcon.className = 'bi bi-moon-stars'; // Lua
+            themeIcon.className = 'bi bi-moon-stars';
         }
     };
 
-    // Verifica se o usuário já tinha um tema salvo
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         body.classList.add('dark-mode');
     }
 
-    updateThemeIcon(); // Define o ícone correto ao carregar a página
+    updateThemeIcon();
 
-    // Adiciona o evento de clique
     themeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-mode');
-        updateThemeIcon(); // Atualiza o ícone no clique
-
-        // Salva a preferência do usuário no localStorage
+        updateThemeIcon();
         if (body.classList.contains('dark-mode')) {
             localStorage.setItem('theme', 'dark');
         } else {
@@ -69,12 +41,7 @@ function handleThemeToggle() {
     });
 }
 
-/**
- * Controla a lógica da página principal (index.html),
- * incluindo o dropdown de idiomas e o botão de login.
- */
 function handleIndexPage() {
-    // Elementos específicos da index.html
     const langToggle = document.getElementById('lang-toggle');
     const langOptions = document.getElementById('lang-options');
     const dropdownContainer = document.getElementById('lang-dropdown-container');
@@ -83,18 +50,14 @@ function handleIndexPage() {
     const ctaButton = document.getElementById('cta-button');
     const loginButtonElement = document.getElementById('login-button');
 
-    // Guard clause: Se não achar os elementos principais da index, para a função.
-    if (!langToggle || !heroTitle || !loginButtonElement) {
-        return;
-    }
+    if (!langToggle || !heroTitle || !loginButtonElement) return;
 
-    // Dicionário de Textos
     const dictionary = {
         'pt': {
             title: "Organize seus estudos em um só lugar.",
             subtitle: "Nossa plataforma inteligente ajuda você a focar, aprender e alcançar seus objetivos acadêmicos com mais eficiência.",
             cta: "Comece agora gratuitamente",
-            login: "Login", // O ID 'login-button' está na index, não nas outras.
+            login: "Login",
         },
         'en': {
             title: "Organize your studies in one place.",
@@ -112,7 +75,6 @@ function handleIndexPage() {
 
     let currentLang = 'pt';
 
-    // Função para aplicar a tradução
     const applyTranslation = (lang) => {
         const texts = dictionary[lang];
         if (texts) {
@@ -125,48 +87,39 @@ function handleIndexPage() {
         }
     };
 
-    // 1. Alternar a visibilidade do dropdown
     langToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         langOptions.classList.toggle('show');
     });
 
-    // 2. Fechar o dropdown ao clicar fora
     document.addEventListener('click', (e) => {
         if (!dropdownContainer.contains(e.target) && langOptions.classList.contains('show')) {
             langOptions.classList.remove('show');
         }
     });
 
-    // 3. Gerenciar o clique nas opções (links) do dropdown
     langOptions.addEventListener('click', (e) => {
         const target = e.target;
         if (target.tagName === 'A') {
             e.preventDefault();
             const newLang = target.getAttribute('data-lang');
             applyTranslation(newLang);
-            langOptions.classList.remove('show'); // Fecha o menu após a seleção
+            langOptions.classList.remove('show');
         }
     });
 
-    // Aplica o idioma salvo ou o padrão na carga da página
     const savedLang = localStorage.getItem('language') || 'pt';
     applyTranslation(savedLang);
-
-    // --- Lógica do Botão de Login (apenas index.html) ---
 }
 
-/**
- * Controla a lógica da página de Quiz (quiz.html).
- */
 function handleQuizPage() {
     const quizContainer = document.getElementById('quiz-container');
     const nextBtn = document.getElementById('next-btn');
-
-    // Guard clause: Se não for a página de quiz, para a função.
-    if (!quizContainer || !nextBtn) {
-        return;
-    }
+    const nextIcon = document.createElement('i');
+    nextIcon.className = 'bi bi-arrow-right';
+    
+    if (nextBtn) nextBtn.appendChild(nextIcon);
+    if (!quizContainer || !nextBtn) return;
 
     const quizData = [
         {
@@ -196,68 +149,83 @@ function handleQuizPage() {
 
     function carregarPergunta() {
         respostaSelecionada = false;
+        nextBtn.disabled = true;
         const q = quizData[quizIndex];
+        
         quizContainer.innerHTML = `
             <h3>${q.pergunta}</h3>
             <div class="opcoes-container">
                 ${q.opcoes.map((op, i) =>
-                    // Usamos data-attributes para uma forma mais limpa, sem 'onclick='
                     `<button class="btn opcao" data-index="${i}">${op}</button>`
                 ).join('')}
             </div>
         `;
     }
 
-    // Função para verificar a resposta
-    function responder(indiceSelecionado) {
-        if (respostaSelecionada) return; // Impede cliques múltiplos
-        respostaSelecionada = true;
+    function responder(indiceSelecionado, botaoClicado) {
+        if (respostaSelecionada) return;
+        
+        botaoClicado.classList.add('selecionada');
+        
+        setTimeout(() => {
+            respostaSelecionada = true;
+            nextBtn.disabled = false;
 
-        const q = quizData[quizIndex];
-        const botoes = quizContainer.querySelectorAll('.opcao');
+            const q = quizData[quizIndex];
+            const botoes = quizContainer.querySelectorAll('.opcao');
 
-        if (indiceSelecionado === q.correta) {
-            botoes[indiceSelecionado].classList.add('correta');
-            // alert("✅ Correto!"); // Alertas pausam a execução, melhor usar feedback visual
-        } else {
-            botoes[indiceSelecionado].classList.add('errada');
-            botoes[q.correta].classList.add('correta');
-            // alert(`❌ Errado! Resposta certa: ${q.opcoes[q.correta]}`);
-        }
+            botoes.forEach(btn => btn.disabled = true);
+
+            if (indiceSelecionado === q.correta) {
+                botaoClicado.classList.remove('selecionada');
+                botaoClicado.classList.add('correta');
+            } else {
+                botaoClicado.classList.remove('selecionada');
+                botaoClicado.classList.add('errada');
+                botoes[q.correta].classList.add('correta');
+            }
+        }, 300);
     }
 
-    // Event listener centralizado para as opções
     quizContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('opcao')) {
+        if (e.target.classList.contains('opcao') && !respostaSelecionada) {
+            quizContainer.querySelectorAll('.opcao').forEach(btn => {
+                btn.classList.remove('selecionada');
+            });
+
             const i = parseInt(e.target.dataset.index, 10);
-            responder(i);
+            responder(i, e.target);
         }
     });
 
-    // Próxima Pergunta
     nextBtn.addEventListener('click', () => {
         quizIndex = (quizIndex + 1) % quizData.length;
         carregarPergunta();
     });
 
-    // Carregar a primeira pergunta
     carregarPergunta();
 }
 
-
-/**
- * Controla a lógica da página de Trilhas (trilhas.html).
- */
 function handleTrilhasPage() {
     const lista = document.getElementById('lista-trilhas');
     const novaBtn = document.getElementById('nova-trilha');
 
-    // Guard clause: Se não for a página de trilhas, para a função.
-    if (!lista || !novaBtn) {
-        return;
-    }
+    if (!lista || !novaBtn) return;
+    
+    const carregarTrilhas = () => {
+        const savedTrilhas = localStorage.getItem('trilhas');
+        return savedTrilhas ? JSON.parse(savedTrilhas) : [
+            { nome: "Fundamentos de HTML & CSS", progresso: 85 },
+            { nome: "JavaScript Intermediário", progresso: 30 },
+            { nome: "Algoritmos e Estrutura de Dados", progresso: 0 }
+        ];
+    };
 
-    const trilhas = []; // Simples array para este exemplo
+    let trilhas = carregarTrilhas();
+
+    const salvarTrilhas = () => {
+        localStorage.setItem('trilhas', JSON.stringify(trilhas));
+    };
 
     function renderTrilhas() {
         if (trilhas.length === 0) {
@@ -267,7 +235,11 @@ function handleTrilhasPage() {
 
         lista.innerHTML = trilhas.map(t => `
             <div class="trilha-card">
-                <h3>${t}</h3>
+                <h3><i class="bi bi-book"></i>${t.nome}</h3>
+                <p class="progress-text">Progresso: ${t.progresso}%</p>
+                <div class="small-progress-bar">
+                    <div class="small-progress" style="width: ${t.progresso}%;"></div>
+                </div>
                 <button class="btn btn-login">Abrir</button>
             </div>
         `).join('');
@@ -276,27 +248,22 @@ function handleTrilhasPage() {
     novaBtn.addEventListener('click', () => {
         const nome = prompt("Nome da trilha:");
         if (nome && nome.trim() !== "") {
-            trilhas.push(nome.trim());
+            trilhas.push({ nome: nome.trim(), progresso: 0 });
+            salvarTrilhas();
             renderTrilhas();
         }
     });
 
-    // Renderiza o estado inicial
     renderTrilhas();
 }
 
-/**
- * Controla a lógica da página de Upload (upload.html).
- */
 function handleUploadPage() {
     const uploadBtn = document.getElementById('upload-btn');
     const fileInput = document.getElementById('file-input');
     const fileName = document.getElementById('file-name');
+    const uploadBox = document.getElementById('upload-box');
 
-    // Guard clause: Se não for a página de upload, para a função.
-    if (!uploadBtn || !fileInput || !fileName) {
-        return;
-    }
+    if (!uploadBtn || !fileInput || !fileName || !uploadBox) return;
 
     uploadBtn.addEventListener('click', () => fileInput.click());
 
@@ -308,57 +275,108 @@ function handleUploadPage() {
             fileName.textContent = '';
         }
     });
-}
 
-/**
- * Controla a lógica da página de Login (login.html).
- */
-function handleLoginPage() {
-    const loginForm = document.getElementById('login-form');
-    const errorMessage = document.getElementById('error-message');
-
-    // Guard clause: Se não encontrar o formulário principal, para a função.
-    if (!loginForm) {
-        return;
-    }
-
-    // --- Lógica para Login com Email e Senha ---
-    loginForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Impede o recarregamento da página
-        
-        const email = document.getElementById('email').value;
-        const senha = document.getElementById('senha').value;
-
-        // Limpa erros antigos
-        if (errorMessage) {
-            errorMessage.textContent = '';
-        }
-
-        // TODO: AQUI ENTRARÁ A LÓGICA DO FIREBASE
-        // (signInWithEmailAndPassword)
-        
-        console.log('Tentativa de login com:', email, senha);
-        alert('Lógica de login com Firebase ainda não implementada.');
-
-        // Exemplo de como mostrar um erro:
-        // if (errorMessage) {
-        //    errorMessage.textContent = 'Email ou senha inválidos.';
-        // }
-        
-        // Exemplo de sucesso (redirecionar):
-        // window.location.href = 'dashboard.html';
+    uploadBox.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadBox.classList.add('is-dragover');
     });
 
-    // --- Lógica para Login com Google (Verificação segura) ---
-    // Isso agora é opcional. O código acima funcionará mesmo sem este botão.
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    if (googleLoginBtn) {
-        googleLoginBtn.addEventListener('click', () => {
-            // TODO: AQUI ENTRARÁ A LÓGICA DO FIREBASE
-            // (signInWithPopup e GoogleAuthProvider)
+    uploadBox.addEventListener('dragleave', () => {
+        uploadBox.classList.remove('is-dragover');
+    });
 
-            console.log('Tentativa de login com Google');
-            alert('Lógica de login com Google (Firebase) ainda não implementada.');
+    uploadBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadBox.classList.remove('is-dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            fileName.textContent = `Arquivo selecionado: ${files[0].name}`;
+        }
+    });
+}
+
+function handleLoginPage() {
+    const loginForm = document.getElementById('login-form');
+    const cadastroForm = document.getElementById('cadastro-form');
+    const errorMessage = document.getElementById('error-message');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            if (errorMessage) errorMessage.textContent = '';
+
+            console.log('Tentativa de login:', email); 
+            
+            if (email && senha) {
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Preencha os campos para testar.');
+            }
         });
     }
+
+    if (cadastroForm) {
+        cadastroForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            
+            const nome = document.getElementById('nome-cadastro').value;
+            const email = document.getElementById('email-cadastro').value;
+            const senha = document.getElementById('senha-cadastro').value;
+
+            console.log('Novo usuário registrado:', nome, email);
+            
+            alert(`Bem-vindo(a), ${nome}! Cadastro realizado com sucesso.`);
+        });
+    }
+}
+
+function handleTabs() {
+    const tabsContainer = document.querySelector('.tabs-container');
+    const formsWrapper = document.querySelector('.forms-wrapper');
+    const tabIndicator = document.querySelector('.tab-indicator');
+    
+    if (!tabsContainer || !formsWrapper) return;
+
+    const switchTab = (tabName) => {
+        tabsContainer.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-tab') === tabName) {
+                btn.classList.add('active');
+            }
+        });
+
+        if (tabName === 'login') {
+            tabIndicator.style.transform = 'translateX(0)';
+            formsWrapper.style.transform = 'translateX(0)';
+        } else if (tabName === 'cadastro') {
+            tabIndicator.style.transform = 'translateX(100%)';
+            formsWrapper.style.transform = 'translateX(-50%)';
+        }
+    };
+
+    tabsContainer.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.classList.contains('tab-button')) {
+            const tabName = target.getAttribute('data-tab');
+            switchTab(tabName);
+        }
+    });
+
+    const switchLinks = document.querySelectorAll('.switch-tab');
+    switchLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabName = link.getAttribute('data-tab');
+            switchTab(tabName);
+        });
+    });
+
+    tabIndicator.style.transform = 'translateX(0)';
+    formsWrapper.style.transform = 'translateX(0)';
 }
