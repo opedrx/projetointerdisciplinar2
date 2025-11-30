@@ -1,21 +1,15 @@
-/* =========================================
-   CONFIGURAÇÕES GLOBAIS E VARIÁVEIS
-========================================= */
 :root {
-    /* Tema Claro (Padrão) */
     --bg-color: #f4f7f6;
     --text-color: #333333;
     --header-bg: #ffffff;
-    --primary-color: #007bff;
-    --primary-hover: #0056b3;
-    --nav-button-bg: #e9ecef;
+    --primary-color: #4A90E2;
+    --primary-hover: #3A7BC7;
+    --nav-button-bg: #f0f2f5;
     --nav-button-text: #495057;
     --card-bg: #ffffff;
-    --border-color: #e0e0e0;
+    --border-color: #d0d0d0;
     --correct-color: #28a745;
     --wrong-color: #dc3545;
-
-    /* Variáveis do Glassmorphism */
     --glass-text-color: #ffffff;
     --glass-border-color: rgba(255, 255, 255, 0.5);
     --glass-bg-color: rgba(255, 255, 255, 0.15);
@@ -24,7 +18,6 @@
 }
 
 body.dark-mode {
-    /* Tema Escuro */
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
     --header-bg: #2c2c2c;
@@ -36,24 +29,16 @@ body.dark-mode {
     --border-color: #444444;
     --correct-color: #30c050;
     --wrong-color: #f04050;
-
-    /* Variáveis do Glassmorphism (Escuro) */
     --glass-bg-color: rgba(0, 0, 0, 0.2); 
     --glass-border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* =========================================
-   ESTILOS PADRÃO (App "Clean")
-========================================= */
-
-/* Reset Básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ESTILO "CLEAN" PADRÃO - Aplicado em quiz.html, dashboard.html, etc. */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
@@ -65,7 +50,6 @@ body {
     flex-direction: column;
 }
 
-/* HEADER "CLEAN" PADRÃO */
 header {
     display: flex;
     justify-content: space-between;
@@ -114,7 +98,6 @@ nav {
     border-radius: 0;
 }
 
-/* Estilo geral de botões */
 .btn {
     padding: 0.5rem 1.2rem;
     font-size: 1rem;
@@ -124,20 +107,26 @@ nav {
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
+    text-decoration: none;
 }
+
 .btn-login {
     background-color: var(--primary-color);
     color: #ffffff;
 }
+
 .btn-login:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
+
 .nav-button {
-    background-color: var(--bg-color);
-    color: var(--nav-button-text);
+    background-color: var(--bg-color); 
+    color: var(--nav-button-text);     
     font-size: 1.1rem;
-    border: 2px solid var(--primary-color);
+    border: none !important;      
+    outline: none !important;     
+    box-shadow: none !important;  
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -147,17 +136,28 @@ nav {
     align-items: center;
     transition: background-color 0.3s ease;
 }
-.nav-button:hover { filter: brightness(0.9); }
-.nav-button i { font-size: 1.2rem; line-height: 1; }
 
-/* Conteúdo Principal (Geral) */
+.nav-button:focus, .nav-button:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.nav-button:hover { 
+    filter: brightness(0.9); 
+}
+
+.nav-button i { 
+    font-size: 1.2rem; 
+    line-height: 1; 
+}
+
 main {
     padding-top: 90px;
     padding-bottom: 2rem;
     flex: 1;
 }
 
-/* Container "CLEAN" (card sólido) */
 .container {
     width: 90%;
     max-width: 900px;
@@ -169,12 +169,32 @@ main {
     box-shadow: 0 6px 16px rgba(0,0,0,0.07);
 }
 
+.metric-card {
+    background-color: var(--nav-button-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.metric-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
 .container h1, .container h2 {
     margin-bottom: 1rem;
     color: var(--text-color);
 }
 
-/* RODAPÉ "CLEAN" PADRÃO */
 footer {
     text-align: center;
     padding: 2rem;
@@ -184,8 +204,8 @@ footer {
     border-top: 1px solid var(--border-color);
 }
 
-/* --- Dropdown (Idioma) --- */
 .dropdown { position: relative; display: inline-block; }
+
 .dropdown-content {
     display: none; 
     position: absolute;
@@ -199,6 +219,7 @@ footer {
     overflow: hidden;
     border: 1px solid var(--border-color);
 }
+
 .dropdown-content a {
     color: var(--text-color);
     padding: 12px 16px;
@@ -206,52 +227,178 @@ footer {
     display: block;
     font-size: 0.95rem;
 }
-.dropdown-content a:hover { background-color: var(--nav-button-bg); }
-.dropdown-content.show { display: block; }
 
-/* --- Estilos da trilhas.html --- */
-.trilhas-lista { margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
-.trilha-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
-.trilha-card h3 { margin-bottom: 1rem; }
+.dropdown-content a:hover { 
+    background-color: var(--nav-button-bg); 
+}
 
-/* --- Estilos da quiz.html --- */
-#quiz-container { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; margin-bottom: 1.5rem; }
-.opcoes-container { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 1.5rem; }
-.opcao { background-color: var(--bg-color); color: var(--text-color); border: 2px solid var(--border-color); width: 100%; text-align: left; padding: 0.8rem 1rem; }
-.opcao:hover { background-color: var(--nav-button-bg); border-color: var(--primary-color); }
-.opcao.correta { background-color: var(--correct-color); color: #fff; border-color: var(--correct-color); }
-.opcao.errada { background-color: var(--wrong-color); color: #fff; border-color: var(--wrong-color); }
+.dropdown-content.show { 
+    display: block; 
+}
 
-/* --- Estilos da upload.html --- */
-.upload-box { border: 3px dashed var(--border-color); border-radius: 12px; padding: 3rem; text-align: center; background-color: var(--card-bg); margin-top: 2rem; }
-#file-name { margin-top: 1rem; font-weight: 500; }
+.trilhas-lista { 
+    margin-top: 2rem; 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 1.5rem; 
+}
 
-/* --- Estilos da dashboard.html --- */
-.progress-bar { width: 100%; height: 25px; background-color: var(--nav-button-bg); border-radius: 12px; overflow: hidden; margin: 1rem 0; }
-.progress { height: 100%; background-color: var(--primary-color); border-radius: 12px 0 0 12px; transition: width 0.5s ease; }
-.container ul { margin-left: 20px; margin-top: 1rem; }
-.btn-cta { background-color: var(--primary-color); color: #ffffff; font-size: 1.1rem; padding: 0.9rem 2rem; }
-.btn-cta:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+.trilha-card { 
+    background-color: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    padding: 1.5rem; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+}
 
+.trilha-card h3 { 
+    margin-bottom: 0.5rem; 
+    color: var(--primary-color); 
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem;
+}
 
-/* =========================================
-   ESTILOS "VITRINE" (Overrides)
-========================================= */
+.trilha-card .small-progress-bar { 
+    width: 100%; 
+    height: 8px; 
+    background-color: var(--nav-button-bg); 
+    border-radius: 4px; 
+    overflow: hidden; 
+    margin: 0.8rem 0; 
+}
 
-/* --- 1. Para index.html --- */
+.trilha-card .small-progress { 
+    height: 100%; 
+    background-color: var(--primary-color); 
+    border-radius: 4px; 
+}
 
-/* Adicione esta classe à tag <body> da index.html */
+.trilha-card p.progress-text { 
+    font-size: 0.85rem; 
+    color: #777; 
+    margin-bottom: 0.5rem; 
+}
+
+#quiz-container { 
+    background-color: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    padding: 2rem; 
+    margin-bottom: 1.5rem; 
+}
+
+.opcoes-container { 
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 0.8rem; 
+    margin-top: 1.5rem; 
+}
+
+.opcao { 
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    border: 2px solid var(--border-color); 
+    width: 100%; 
+    text-align: left; 
+    padding: 0.8rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.opcao:not([disabled]):hover { 
+    background-color: var(--nav-button-bg); 
+    border-color: var(--primary-color); 
+}
+
+.opcao.selecionada { 
+    border-color: var(--primary-color); 
+    background-color: var(--nav-button-bg); 
+}
+
+.opcao.correta { 
+    background-color: var(--correct-color); 
+    color: #fff; 
+    border-color: var(--correct-color); 
+}
+
+.opcao.errada { 
+    background-color: var(--wrong-color); 
+    color: #fff; 
+    border-color: var(--wrong-color); 
+}
+
+.upload-box { 
+    border: 3px dashed var(--border-color); 
+    border-radius: 12px; 
+    padding: 3rem; 
+    text-align: center; 
+    background-color: var(--card-bg); 
+    margin-top: 2rem; 
+    transition: all 0.3s ease;
+}
+
+.upload-box:hover, .upload-box.is-dragover {
+    border-color: var(--primary-color);
+    background-color: var(--nav-button-bg);
+}
+
+.upload-box p {
+    margin-top: 1rem;
+    color: #888;
+}
+
+#file-name { 
+    margin-top: 1rem; 
+    font-weight: 500; 
+}
+
+.progress-bar { 
+    width: 100%; 
+    height: 25px; 
+    background-color: var(--nav-button-bg); 
+    border-radius: 12px; 
+    overflow: hidden; 
+    margin: 1rem 0; 
+}
+
+.progress { 
+    height: 100%; 
+    background-color: var(--primary-color); 
+    border-radius: 12px 0 0 12px; 
+    transition: width 0.5s ease; 
+}
+
+.container ul { 
+    margin-left: 20px; 
+    margin-top: 1rem; 
+}
+
+.btn-cta { 
+    background-color: var(--primary-color); 
+    color: #ffffff; 
+    font-size: 1.1rem; 
+    padding: 0.9rem 2rem; 
+}
+
+.btn-cta:hover { 
+    background-color: var(--primary-hover); 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.btn-cta i { 
+    margin-left: 0.5rem; 
+}
+
 body.body-vitrine {
-    /* ATENÇÃO, PEDRO: 
-      Certifique-se de que este caminho está correto.
-      Você precisa ter uma pasta 'images' e um arquivo 'montanha.jpg' dentro dela.
-    */
-    background: url('images/montanha.jpg') no-repeat center center fixed;
+    background: url('images/montanha2.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
 }
 
-/* Adicione esta classe ao <header> e <footer> da index.html */
 .glass-nav {
     background-color: var(--glass-bg-color);
     backdrop-filter: blur(10px);
@@ -259,25 +406,28 @@ body.body-vitrine {
     border-bottom: 1px solid var(--glass-border-color);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 .glass-nav.footer-glass {
     border-bottom: none;
     border-top: 1px solid var(--glass-border-color);
 }
+
 .glass-nav .nav-link,
 .glass-nav .logo,
 .glass-nav p {
     color: var(--glass-text-color);
 }
+
 .glass-nav .nav-button {
     background-color: transparent;
     color: var(--glass-text-color);
 }
+
 .glass-nav footer p {
     color: var(--glass-text-color);
     opacity: 0.8;
 }
 
-/* Estilos da "Hero" (página inicial) sobre o fundo */
 .hero {
     display: flex;
     flex-direction: column;
@@ -288,6 +438,7 @@ body.body-vitrine {
     padding: 2rem;
     padding-top: 0;
 }
+
 .hero h1 {
     font-size: 3.2rem;
     color: #ffffff;
@@ -295,6 +446,7 @@ body.body-vitrine {
     max-width: 600px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
+
 .hero p {
     font-size: 1.2rem;
     color: #ffffff;
@@ -304,48 +456,100 @@ body.body-vitrine {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-
-/* --- 2. Para login.html (e cadastro.html) --- */
-
-/* Adicione esta classe à tag <body> da login.html */
 body.body-glass-login {
     font-family: "Open Sans", sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* ATENÇÃO, PEDRO: 
-      Este caminho também precisa estar correto.
-    */
-    background: url('images/montanha.jpg') no-repeat center center fixed;
+    background: url('images/montanha2.jpg') no-repeat center center fixed;
     background-size: cover;
     flex-direction: row; 
+    margin: 0; 
+    padding: 20px;
 }
 
-/* Card de Vidro do Login */
 .wrapper {
-    width: 420px;
+    width: 90%;
+    max-width: 550px;
     background-color: var(--glass-bg-color);
     border: 1px solid var(--glass-border-color);
     border-radius: 12px;
-    padding: 30px 40px;
+    padding: 30px 15px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(9px);
     -webkit-backdrop-filter: blur(9px);
     color: var(--glass-text-color);
+    overflow: hidden !important;
+    position: relative;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden !important;
 }
 
-.wrapper h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: var(--glass-text-color);
-    text-align: center;
+.tabs-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px; 
+    position: relative;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6); 
+    padding: 10px 0;
+    flex: 1;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+.tab-button.active {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.tab-indicator {
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    height: 4px; 
+    width: 50%;
+    background-color: #ffffff; 
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); 
+    border-radius: 2px;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    z-index: 1;
+}
+
+.forms-wrapper {
+    display: flex;
+    width: 200%;
+    transition: transform .4s ease;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    overflow: hidden;
+}
+
+.form-content {
+    width: 50%;
+    flex: 0 0 50%;
+    min-width: 50%;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .input-field {
     position: relative;
     border-bottom: 2px solid var(--glass-border-color);
-    margin: 30px 0;
+    margin: 25px 0;
 }
 
 .input-field label {
@@ -376,11 +580,12 @@ body.body-glass-login {
     font-size: 0.8em;
 }
 
+/* Links "Esqueceu a senha" e Checkbox */
 .forget {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: -15px 0 15px;
+    margin: -10px 0 15px;
     font-size: 0.9em;
 }
 
@@ -401,6 +606,7 @@ body.body-glass-login {
 }
 .forget a:hover { text-decoration: underline; }
 
+/* Botão Principal do Form */
 .btn-primary-glass {
     width: 100%;
     height: 45px;
@@ -412,6 +618,7 @@ body.body-glass-login {
     cursor: pointer;
     font-size: 1em;
     transition: 0.3s ease;
+    margin-top: 10px;
 }
 
 .btn-primary-glass:hover {
@@ -420,18 +627,30 @@ body.body-glass-login {
     border: 1px solid var(--glass-border-color);
 }
 
+/* Rodapé do Form (Switch Link) */
 .register {
     text-align: center;
-    margin: 20px 0 0;
+    margin: 25px 0 0;
     font-size: 0.9em;
 }
 
-.register p a {
-    color: var(--glass-link-color);
-    text-decoration: none;
-    font-weight: 600;
+.register p {
+    color: rgba(255, 255, 255, 0.8);
 }
-.register p a:hover { text-decoration: underline; }
+
+.switch-tab {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.switch-tab:hover {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+    border-bottom-style: solid;
+}
 
 .error-glass {
     color: var(--wrong-color);
@@ -440,11 +659,34 @@ body.body-glass-login {
     text-align: center;
     display: block;
 }
-/* =========================================
-   CORREÇÕES DE OVERRIDE
-========================================= */
 
-/* Corrige o problema de centralização do login */
 body.body-glass-login main {
     padding-top: 0;
+}
+
+/* --- REMOÇÃO FORÇADA DE BORDAS AZUIS DE FOCO (ACESSIBILIDADE LIMPA) --- */
+#lang-toggle, 
+#theme-toggle, 
+.btn-login, 
+.btn-cta, 
+.nav-button,
+a.btn:focus,
+button:focus {
+    outline: none !important;
+    box-shadow: none !important; 
+}
+
+#lang-toggle:focus, 
+#theme-toggle:focus, 
+.nav-button:focus,
+.btn-login:focus {
+    outline: none !important;
+    border-color: transparent !important;
+}
+
+.form-content {
+    width: 50% !important;
+    min-width: 50% !important;
+    max-width: 50% !important;
+    flex: 0 0 50% !important;
 }
