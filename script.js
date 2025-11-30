@@ -1,21 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     handleThemeToggle();
-
-    // Lógica da 'index.html' (Idioma e Login)
     handleIndexPage();
-
-    // Lógica da 'quiz.html'
     handleQuizPage();
-
-    // Lógica da 'trilhas.html'
     handleTrilhasPage();
-
-    // Lógica da 'upload.html'
     handleUploadPage();
-
     handleLoginPage();
-
     handleTabs();
 });
 
@@ -24,15 +13,13 @@ function handleThemeToggle() {
     const themeIcon = document.getElementById('theme-icon');
     const body = document.body;
 
-    if (!themeToggle || !themeIcon) {
-        return;
-    }
+    if (!themeToggle || !themeIcon) return;
 
     const updateThemeIcon = () => {
         if (body.classList.contains('dark-mode')) {
-            themeIcon.className = 'bi bi-brightness-high'; // Sol
+            themeIcon.className = 'bi bi-brightness-high';
         } else {
-            themeIcon.className = 'bi bi-moon-stars'; // Lua
+            themeIcon.className = 'bi bi-moon-stars';
         }
     };
 
@@ -54,9 +41,7 @@ function handleThemeToggle() {
     });
 }
 
-
 function handleIndexPage() {
-
     const langToggle = document.getElementById('lang-toggle');
     const langOptions = document.getElementById('lang-options');
     const dropdownContainer = document.getElementById('lang-dropdown-container');
@@ -65,10 +50,7 @@ function handleIndexPage() {
     const ctaButton = document.getElementById('cta-button');
     const loginButtonElement = document.getElementById('login-button');
 
-    if (!langToggle || !heroTitle || !loginButtonElement) {
-        return;
-    }
-
+    if (!langToggle || !heroTitle || !loginButtonElement) return;
 
     const dictionary = {
         'pt': {
@@ -128,17 +110,16 @@ function handleIndexPage() {
 
     const savedLang = localStorage.getItem('language') || 'pt';
     applyTranslation(savedLang);
-
 }
-
 
 function handleQuizPage() {
     const quizContainer = document.getElementById('quiz-container');
     const nextBtn = document.getElementById('next-btn');
-
-    if (!quizContainer || !nextBtn) {
-        return;
-    }
+    const nextIcon = document.createElement('i');
+    nextIcon.className = 'bi bi-arrow-right';
+    
+    if (nextBtn) nextBtn.appendChild(nextIcon);
+    if (!quizContainer || !nextBtn) return;
 
     const quizData = [
         {
@@ -168,7 +149,9 @@ function handleQuizPage() {
 
     function carregarPergunta() {
         respostaSelecionada = false;
+        nextBtn.disabled = true;
         const q = quizData[quizIndex];
+        
         quizContainer.innerHTML = `
             <h3>${q.pergunta}</h3>
             <div class="opcoes-container">
@@ -179,25 +162,39 @@ function handleQuizPage() {
         `;
     }
 
-    function responder(indiceSelecionado) {
+    function responder(indiceSelecionado, botaoClicado) {
         if (respostaSelecionada) return;
-        respostaSelecionada = true;
+        
+        botaoClicado.classList.add('selecionada');
+        
+        setTimeout(() => {
+            respostaSelecionada = true;
+            nextBtn.disabled = false;
 
-        const q = quizData[quizIndex];
-        const botoes = quizContainer.querySelectorAll('.opcao');
+            const q = quizData[quizIndex];
+            const botoes = quizContainer.querySelectorAll('.opcao');
 
-        if (indiceSelecionado === q.correta) {
-            botoes[indiceSelecionado].classList.add('correta');
-        } else {
-            botoes[indiceSelecionado].classList.add('errada');
-            botoes[q.correta].classList.add('correta');
-        }
+            botoes.forEach(btn => btn.disabled = true);
+
+            if (indiceSelecionado === q.correta) {
+                botaoClicado.classList.remove('selecionada');
+                botaoClicado.classList.add('correta');
+            } else {
+                botaoClicado.classList.remove('selecionada');
+                botaoClicado.classList.add('errada');
+                botoes[q.correta].classList.add('correta');
+            }
+        }, 300);
     }
 
     quizContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('opcao')) {
+        if (e.target.classList.contains('opcao') && !respostaSelecionada) {
+            quizContainer.querySelectorAll('.opcao').forEach(btn => {
+                btn.classList.remove('selecionada');
+            });
+
             const i = parseInt(e.target.dataset.index, 10);
-            responder(i);
+            responder(i, e.target);
         }
     });
 
@@ -209,17 +206,26 @@ function handleQuizPage() {
     carregarPergunta();
 }
 
-
-
 function handleTrilhasPage() {
     const lista = document.getElementById('lista-trilhas');
     const novaBtn = document.getElementById('nova-trilha');
 
-    if (!lista || !novaBtn) {
-        return;
-    }
+    if (!lista || !novaBtn) return;
+    
+    const carregarTrilhas = () => {
+        const savedTrilhas = localStorage.getItem('trilhas');
+        return savedTrilhas ? JSON.parse(savedTrilhas) : [
+            { nome: "Fundamentos de HTML & CSS", progresso: 85 },
+            { nome: "JavaScript Intermediário", progresso: 30 },
+            { nome: "Algoritmos e Estrutura de Dados", progresso: 0 }
+        ];
+    };
 
-    const trilhas = [];
+    let trilhas = carregarTrilhas();
+
+    const salvarTrilhas = () => {
+        localStorage.setItem('trilhas', JSON.stringify(trilhas));
+    };
 
     function renderTrilhas() {
         if (trilhas.length === 0) {
@@ -229,7 +235,11 @@ function handleTrilhasPage() {
 
         lista.innerHTML = trilhas.map(t => `
             <div class="trilha-card">
-                <h3>${t}</h3>
+                <h3><i class="bi bi-book"></i>${t.nome}</h3>
+                <p class="progress-text">Progresso: ${t.progresso}%</p>
+                <div class="small-progress-bar">
+                    <div class="small-progress" style="width: ${t.progresso}%;"></div>
+                </div>
                 <button class="btn btn-login">Abrir</button>
             </div>
         `).join('');
@@ -238,7 +248,8 @@ function handleTrilhasPage() {
     novaBtn.addEventListener('click', () => {
         const nome = prompt("Nome da trilha:");
         if (nome && nome.trim() !== "") {
-            trilhas.push(nome.trim());
+            trilhas.push({ nome: nome.trim(), progresso: 0 });
+            salvarTrilhas();
             renderTrilhas();
         }
     });
@@ -246,16 +257,13 @@ function handleTrilhasPage() {
     renderTrilhas();
 }
 
-
 function handleUploadPage() {
     const uploadBtn = document.getElementById('upload-btn');
     const fileInput = document.getElementById('file-input');
     const fileName = document.getElementById('file-name');
+    const uploadBox = document.getElementById('upload-box');
 
-
-    if (!uploadBtn || !fileInput || !fileName) {
-        return;
-    }
+    if (!uploadBtn || !fileInput || !fileName || !uploadBox) return;
 
     uploadBtn.addEventListener('click', () => fileInput.click());
 
@@ -267,28 +275,45 @@ function handleUploadPage() {
             fileName.textContent = '';
         }
     });
+
+    uploadBox.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadBox.classList.add('is-dragover');
+    });
+
+    uploadBox.addEventListener('dragleave', () => {
+        uploadBox.classList.remove('is-dragover');
+    });
+
+    uploadBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadBox.classList.remove('is-dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            fileName.textContent = `Arquivo selecionado: ${files[0].name}`;
+        }
+    });
 }
 
 function handleLoginPage() {
     const loginForm = document.getElementById('login-form');
-    const cadastroForm = document.getElementById('cadastro-form'); // Capturamos o form de cadastro
+    const cadastroForm = document.getElementById('cadastro-form');
     const errorMessage = document.getElementById('error-message');
 
-    // Lógica do LOGIN
     if (loginForm) {
         loginForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Impede o refresh da página
+            event.preventDefault();
             
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
 
             if (errorMessage) errorMessage.textContent = '';
 
-            // DICA DE SEGURANÇA: Evite logs de senha em produção
             console.log('Tentativa de login:', email); 
             
             if (email && senha) {
-                // Aqui entraria sua chamada para o Backend (Python/Flask/Django)
                 window.location.href = 'dashboard.html';
             } else {
                 alert('Preencha os campos para testar.');
@@ -296,10 +321,9 @@ function handleLoginPage() {
         });
     }
 
-    // Lógica do CADASTRO (A correção principal)
     if (cadastroForm) {
         cadastroForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Impede o refresh!
+            event.preventDefault();
             
             const nome = document.getElementById('nome-cadastro').value;
             const email = document.getElementById('email-cadastro').value;
@@ -307,11 +331,7 @@ function handleLoginPage() {
 
             console.log('Novo usuário registrado:', nome, email);
             
-            // Simulação de sucesso
             alert(`Bem-vindo(a), ${nome}! Cadastro realizado com sucesso.`);
-            
-            // Opcional: Redirecionar para o login ou dashboard
-            // window.location.href = 'dashboard.html';
         });
     }
 }
@@ -321,13 +341,9 @@ function handleTabs() {
     const formsWrapper = document.querySelector('.forms-wrapper');
     const tabIndicator = document.querySelector('.tab-indicator');
     
-    if (!tabsContainer || !formsWrapper) {
-        return;
-    }
+    if (!tabsContainer || !formsWrapper) return;
 
-    // Função auxiliar para mudar a aba
     const switchTab = (tabName) => {
-        // 1. Atualiza visual dos botões
         tabsContainer.querySelectorAll('.tab-button').forEach(btn => {
             btn.classList.remove('active');
             if (btn.getAttribute('data-tab') === tabName) {
@@ -335,17 +351,15 @@ function handleTabs() {
             }
         });
 
-        // 2. Animação de deslize
         if (tabName === 'login') {
             tabIndicator.style.transform = 'translateX(0)';
-            formsWrapper.style.transform = 'translateX(0)'; 
+            formsWrapper.style.transform = 'translateX(0)';
         } else if (tabName === 'cadastro') {
             tabIndicator.style.transform = 'translateX(100%)';
-            formsWrapper.style.transform = 'translateX(-50%)'; 
+            formsWrapper.style.transform = 'translateX(-50%)';
         }
     };
 
-    // Listener para cliques nos botões superiores
     tabsContainer.addEventListener('click', (e) => {
         const target = e.target;
         if (target.classList.contains('tab-button')) {
@@ -354,7 +368,6 @@ function handleTabs() {
         }
     });
 
-    // NOVO: Listener para os links de texto dentro do form ("Crie uma agora" / "Fazer Login")
     const switchLinks = document.querySelectorAll('.switch-tab');
     switchLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -364,7 +377,6 @@ function handleTabs() {
         });
     });
 
-    // Estado inicial
     tabIndicator.style.transform = 'translateX(0)';
     formsWrapper.style.transform = 'translateX(0)';
 }
